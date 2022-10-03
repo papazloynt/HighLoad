@@ -1,5 +1,6 @@
 #include <thread>
 #include <iostream>
+#include <coroutine>
 
 // C++ I love U!
 /*  PLAN:
@@ -8,6 +9,7 @@
         3. Coroutines realisation check
         4. Make architecture of application + shared lib
         5. Start coding!
+        6. Check with Valgrind
  */
 int main() {
     const unsigned int processor_count = std::thread::hardware_concurrency();
