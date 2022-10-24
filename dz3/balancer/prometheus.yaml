@@ -1,0 +1,42 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  # LOAD BALANCER
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'info_balancer'
+    static_configs:
+      - targets: ['node_exporter:9100']
+
+  # SERVERS
+
+  # SERVER 1
+  - job_name: 'backend-1'
+    static_configs:
+      - targets: ['85.192.34.161:5000']
+
+  - job_name: 'server-1'
+    static_configs:
+      - targets: ['85.192.34.161:9100']
+
+  # SERVER 2
+  - job_name: 'backend-2'
+    static_configs:
+      - targets: ['146.185.211.161:5000']
+
+  - job_name: 'server-2'
+    static_configs:
+      - targets: ['146.185.211.161:9100']
+
+  # SERVER 3
+  - job_name: 'backend-3'
+    static_configs:
+      - targets: ['109.120.183.3:5000']
+
+  - job_name: 'server-3'
+    static_configs:
+      - targets: ['109.120.183.3:9100']

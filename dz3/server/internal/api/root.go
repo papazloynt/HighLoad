@@ -13,12 +13,12 @@ import (
 )
 
 type APIService struct {
-	log    *logrus.Entry
-	router *echo.Echo
+	log     *logrus.Entry
+	router  *echo.Echo
+	metrics *PrometheusMetrics
 }
 
 func (svc *APIService) Serve() {
-	//svc.log.Info("Starting HTTP server")
 	listenAddr := viper.GetString("service.bind.address") + ":" + viper.GetString("service.bind.port")
 	svc.log.Fatal(svc.router.Start(listenAddr))
 }
@@ -36,9 +36,6 @@ func NewAPIService(log *logrus.Entry, db_ *pgxpool.Pool) (*APIService, error) {
 		router: echo.New(),
 	}
 
-	//svc.router.Validator = NewValidator()
-	//svc.router.Binder = NewBinder()
-
 	repository, err := db.NewRepository(db_)
 	if err != nil {
 		log.Fatal(err)
@@ -51,6 +48,10 @@ func NewAPIService(log *logrus.Entry, db_ *pgxpool.Pool) (*APIService, error) {
 	threadCtrl := controllers.NewThreadController(log, registry)
 	postCtrl := controllers.NewPostController(log, registry)
 	serviceCtrl := controllers.NewServiceController(log, repository)
+
+	// metrics
+	svc.metrics = RegisterMonitoring(svc.router)
+	svc.router.Use(svc.MetricsMiddleware())
 
 	api := svc.router.Group("/api")
 
