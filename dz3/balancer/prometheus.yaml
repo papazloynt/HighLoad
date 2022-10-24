@@ -17,26 +17,26 @@ scrape_configs:
   # SERVER 1
   - job_name: 'backend-1'
     static_configs:
-      - targets: ['85.192.34.161:5000']
+      - targets: ['37.139.41.140:5000']
 
   - job_name: 'server-1'
     static_configs:
-      - targets: ['85.192.34.161:9100']
+      - targets: ['37.139.41.140:9100']
 
   # SERVER 2
   - job_name: 'backend-2'
     static_configs:
-      - targets: ['146.185.211.161:5000']
+      - targets: ['5.188.142.133:5000']
 
   - job_name: 'server-2'
     static_configs:
-      - targets: ['146.185.211.161:9100']
+      - targets: ['5.188.142.133:9100']
 
   # SERVER 3
   - job_name: 'backend-3'
     static_configs:
-      - targets: ['109.120.183.3:5000']
+      - targets: ['185.241.193.166:5000']
 
   - job_name: 'server-3'
     static_configs:
-      - targets: ['109.120.183.3:9100']
+      - targets: ['185.241.193.166:9100']
