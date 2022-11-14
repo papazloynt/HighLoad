@@ -93,7 +93,11 @@ Twitch [[1](https://ru.wikipedia.org/wiki/Twitch)] - видеостриминг�
 Отправка сообщения в чат   |  720 
 Подписка на стримера       |  2
 Авторизация                |  15
-## 3. Источники
+
+## 3. Логическая схема 
+![Логическая схема](https://i.ibb.co/ZW8tm8y/Untitled-Diagram-drawio.png)
+
+## 8. Источники
 1. https://ru.wikipedia.org/wiki/Twitch
 2. https://www.similarweb.com/ru/website/twitch.tv/#traffic
 3. https://www.similarweb.com/ru/website/twitch.tv/#geography
