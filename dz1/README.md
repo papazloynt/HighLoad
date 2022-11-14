@@ -151,9 +151,9 @@ Twitch [[1](https://ru.wikipedia.org/wiki/Twitch)] - видеостриминг�
 Поле          | Индексы
 --------------| -----------------------
 Users         |  id, username
-Photos        |  id (dafault)
+Photos        |  id (default)
 Subscriptions |  user_id, streamer_id
-Streams       |  id (dafault)
+Streams       |  id (default)
 Links         |  stream_id
 
 **Redis**
