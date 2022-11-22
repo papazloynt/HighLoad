@@ -1,0 +1,3 @@
+[submodule "dz2/third_party/googletest"]
+	path = dz2/third_party/googletest
+	url = https://github.com/google/googletest.git

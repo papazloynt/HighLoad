@@ -2,18 +2,17 @@
 #define DZ2_REQUEST_H
 
 #include <string>
-#include "http_constants.h"
 
-// Check all work, of course
 class Request {
 public:
-    explicit Request(const std::string& requset_);
+    explicit Request(const std::string& req);
 
     std::string get_method();
     std::string get_url();
+    std::string get_url_without_queries();
 
 private:
-    static std::string url_decode(std::string&& SRC);
+    static std::string url_decode(const std::string& url);
 
     std::string method;
     std::string url;
