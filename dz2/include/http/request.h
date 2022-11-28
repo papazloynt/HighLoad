@@ -7,9 +7,9 @@ class Request {
 public:
     explicit Request(const std::string& req);
 
-    std::string get_method();
-    std::string get_url();
-    std::string get_url_without_queries();
+    [[nodiscard]] std::string get_method() const;
+    [[nodiscard]] std::string get_url() const;
+    [[nodiscard]] std::string get_url_without_queries() const;
 
 private:
     static std::string url_decode(const std::string& url);

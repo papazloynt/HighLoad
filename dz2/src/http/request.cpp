@@ -19,15 +19,15 @@ Request::Request(const std::string& req) {
     url = url_decode(hard_url);
 }
 
-std::string Request::get_method() {
+std::string Request::get_method() const {
     return method;
 }
 
-std::string Request::get_url() {
+std::string Request::get_url() const {
     return url;
 }
 
-std::string Request::get_url_without_queries() {
+std::string Request::get_url_without_queries() const {
     auto p = url.find_first_of('?');
     if (p == std::string::npos) {
         p = url.size();

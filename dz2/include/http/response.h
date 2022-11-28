@@ -16,6 +16,8 @@ public:
 
     ~Response() = default;
 
+    void create_header(const std::string& name, const std::string& value);
+
 private:
     int status;
     std::string body;

@@ -5,8 +5,8 @@
 
 // TODO: do we need set date?
 Response::Response(int status) : status(status) {
-    headers.insert({"Server", "cool.chastikov"});
-    headers.insert({"Connection", "close"});
+    create_header("Server", "cool.chastikov");
+    create_header("Connection", "close");
 }
 
 [[maybe_unused]] Response::Response(int status,
@@ -17,8 +17,12 @@ Response::Response(int status) : status(status) {
                                  body(std::move(data_body)),
                                  filepath(std::move(filepath)),
                                  filesize(filesize) {
-    headers.insert({"Content-Length", std::to_string(body.size())});
-    headers.insert({"Content-Type", content_type});
-    headers.insert({"Server", "cool.chastikov"});
-    headers.insert({"Connection", "close"});
+    create_header("Content-Length", std::to_string(body.size()));
+    create_header("Content-Type", content_type);
+    create_header("Server", "cool.chastikov");
+    create_header("Connection", "close");
+}
+
+void Response::create_header(const std::string& name, const std::string& value) {
+    headers.insert({name, value});
 }

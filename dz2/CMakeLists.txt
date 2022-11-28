@@ -15,10 +15,35 @@ add_library(http STATIC
 target_include_directories(http PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/http)
 
+# Handler
+add_library(handler STATIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/handler/handler.cpp)
+
+target_include_directories(handler PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/handler
+        ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(handler
+        http)
+
+# Server
+add_library(server STATIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/server/server.cpp)
+
+target_include_directories(server PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/server)
+
+target_link_libraries(server
+        http
+        handler)
+
 
 # Main
 add_executable(main
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+
+target_link_libraries(main
+        server)
 
 
 #Tests
