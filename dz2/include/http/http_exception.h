@@ -3,12 +3,13 @@
 
 #include <exception>
 #include <string>
+#include <utility>
 
 class HttpException : public std::exception {
 public:
-    HttpException(const std::string msg_what) : msg_what(std::move(msg_what)) {}
+    explicit HttpException(std::string msg_what) : msg_what(std::move(msg_what)) {}
 
-    const char* what() const noexcept override {
+    [[nodiscard]] const char* what() const noexcept override {
         return msg_what.c_str();
     }
 
