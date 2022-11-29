@@ -1,29 +1,38 @@
 #ifndef DZ2_HTTP_CONSTANTS_H
 #define DZ2_HTTP_CONSTANTS_H
 
-#include <string_view>
+#include <string>
 
 namespace http_constants {
-    const std::string_view METHOD_GET = "GET";
-    const std::string_view METHOD_HEAD = "HEAD";
+    const std::string METHOD_GET = "GET";
+    const std::string METHOD_HEAD = "HEAD";
 
-    const std::string_view protocol = "HTTP/1.1";
+    const std::string protocol = "HTTP/1.1";
 
     enum {
         ok = 200,
-        bad_request = 400,
         forbidden = 403,
         not_found = 404,
         method_not_allowed = 405,
     };
 
-    static std::string_view get_correct_content_type(std::string_view ext) {
+    static std::string status_to_str(int status) {
+        switch (status) {
+            case ok: return "OK";
+            case forbidden: return "Forbidden";
+            case not_found: return "NotFound";
+            case method_not_allowed: return "Method Not Allowed";
+            default: return "nothing";
+        }
+    }
+
+    static std::string get_correct_content_type(const std::string& ext) {
         if (ext == ".html") {
             return "text/html";
-        } else if (ext == ".js") {
-            return "application/javascript";
         } else if (ext == ".css") {
             return "text/css";
+        } else if (ext == ".js") {
+            return "application/javascript";
         } else if (ext == ".jpg" || ext == ".jpeg") {
             return "image/jpeg";
         } else if (ext == ".png") {

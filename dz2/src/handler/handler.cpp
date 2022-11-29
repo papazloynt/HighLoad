@@ -2,34 +2,40 @@
 #include "http/http_constants.h"
 
 #include <fstream>
+#include <iostream>
 
 Response Handler::handle(const Request& req) const {
-    if (req.get_method() != http_constants::METHOD_GET ||
+    if (req.get_method() != http_constants::METHOD_GET &&
     req.get_method() != http_constants::METHOD_HEAD) {
         return Response(http_constants::method_not_allowed);
     }
 
     std::string path = req.get_url_without_queries();
-    if (path.find_first_of("../") != std::string::npos) {
+    if (path.find("../") != std::string::npos) {
         return Response(http_constants::forbidden);
     }
 
     std::filesystem::path file_path = dir_path;
     file_path.append(path.substr(1));
 
-    if (!file_path.has_filename()) {
+    if (!std::filesystem::exists(file_path)) {
         return Response(http_constants::not_found);
     }
 
-    if (!std::filesystem::exists(file_path)) {
-        return Response(http_constants::not_found);
+    if (!file_path.has_filename()) {
+        file_path.replace_filename("index.html");
     }
 
     if (std::filesystem::is_directory(file_path)) {
         return Response(http_constants::forbidden);
     }
 
-    auto ext = file_path.extension();
+    if (!std::filesystem::exists(file_path)) {
+        return Response(http_constants::forbidden);
+    }
+
+
+    auto ext = http_constants::get_correct_content_type(file_path.extension());
     auto len_content = std::filesystem::file_size(file_path);
 
     if (req.get_method() == http_constants::METHOD_HEAD) {

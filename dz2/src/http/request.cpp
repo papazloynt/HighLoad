@@ -1,22 +1,14 @@
 #include "request.h"
 #include "http_exception.h"
 
-Request::Request(const std::string& req) {
-   auto p = req.find_first_of(' ');
-   if (p == std::string::npos) {
-        throw HttpException("bad style of request");
-   }
+#include <regex>
 
-   method = req.substr(0, p);
-   while (req.at(p) == ' ') {
-       ++p;
-   }
-   auto start_pos_of_url = p;
-    while (p < req.size() and req.at(p) != ' ') {
-        ++p;
-    }
-    std::string hard_url = req.substr(start_pos_of_url, p - start_pos_of_url);
-    url = url_decode(hard_url);
+inline std::regex startLine(R"((PUT|GET|POST|HEAD|OPTIONS|PATCH)\s(/[^\n\s\r\t\0]*)\sHTTP/([\d.]+)\r\n)");
+
+Request::Request(const std::string& req) {
+    std::sregex_iterator match(req.begin(), req.end(), startLine);
+    method = match->format("$1");
+    url = url_decode(match->format("$2"));
 }
 
 std::string Request::get_method() const {

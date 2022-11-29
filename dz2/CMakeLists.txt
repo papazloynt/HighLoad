@@ -7,6 +7,33 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -ggdb3 -fcoroutines -pt
 
 set(CMAKE_CXX_STANDARD 17)
 
+# LIBEVENT_INCLUDE
+find_path(LIBEVENT_INCLUDE_DIR event.h
+        PATHS
+        /usr/local
+        /opt
+        PATH_SUFFIXES
+        include
+        )
+
+find_library(LIBEVENT_LIB
+        NAMES
+        event
+        PATHS
+        /usr/local
+        /opt
+        PATH_SUFFIXES
+        lib
+        lib64
+        )
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(
+        LIBEVENT_LIB
+        LIBEVENT_INCLUDE_DIR
+)
+
+
 # Request/Response realisation
 add_library(http STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/http/request.cpp
@@ -31,16 +58,21 @@ add_library(server STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/server/server.cpp)
 
 target_include_directories(server PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/server)
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/server
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${LIBEVENT_INCLUDE_DIR})
 
 target_link_libraries(server
-        http
-        handler)
+        handler
+        ${LIBEVENT_LIB})
 
 
 # Main
 add_executable(main
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+
+target_include_directories(main PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_link_libraries(main
         server)

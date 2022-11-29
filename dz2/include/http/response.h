@@ -17,8 +17,10 @@ public:
     ~Response() = default;
 
     void create_header(const std::string& name, const std::string& value);
-
+    [[nodiscard]] std::string to_str() const;
 private:
+    void create_date();
+
     int status;
     std::string body;
     std::string filepath;
