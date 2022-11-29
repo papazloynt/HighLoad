@@ -44,7 +44,6 @@ struct Scheduler {
             auto task = tasks.front();
             tasks.pop_front();
             if (not task.done()) { task.resume(); }
-            return false;
         }
         return false;
     }

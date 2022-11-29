@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+static std::map<std::string, std::string> cached_data;
+
 Response Handler::handle(const Request& req) const {
     if (req.get_method() != http_constants::METHOD_GET &&
     req.get_method() != http_constants::METHOD_HEAD) {
@@ -45,13 +47,26 @@ Response Handler::handle(const Request& req) const {
         return res;
     }
 
-    std::ifstream input( file_path.string(), std::ios::binary);
-    return {http_constants::ok,
-            {
-                std::istreambuf_iterator<char>(input),
-                std::istreambuf_iterator<char>()
-                    },
-            ext,
-            file_path.string(),
-            len_content};
+    std::string read;
+
+    auto search = cached_data.find(file_path.string());
+    if (search != cached_data.end()) {
+        read += cached_data[file_path.string()];
+        return { http_constants::ok,
+                 read,
+                 ext,
+                 file_path.string(),
+                 len_content
+        };
+    }
+        std::ifstream input( file_path.string(), std::ios::binary);
+        std::string str{std::istreambuf_iterator<char>(input),
+                        std::istreambuf_iterator<char>()
+        };
+        cached_data.insert({file_path.string(), str});
+        return {http_constants::ok,
+                str,
+                ext,
+                file_path.string(),
+                len_content};
 }
