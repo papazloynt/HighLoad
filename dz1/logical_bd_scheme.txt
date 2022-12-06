@@ -1,0 +1,36 @@
+//// -- LEVEL 1
+//// -- Schemas, Tables and References
+
+// Creating tables
+// You can define the tables with full schema names
+Table Users {
+  id int [pk, increment] // auto-increment
+  username varchar
+  password bytea
+  avatar_hash bytea
+  email_address varchar
+  description text
+  created_at timestamp
+}
+
+Table Subscriptions {
+  id int [pk, increment] // auto-increment
+  user_id int
+  streamer_id int
+}
+
+Ref: Users.id < Subscriptions.user_id 
+Ref: Users.id < Subscriptions.streamer_id 
+
+Table Streams {
+  id int [pk, increment] // auto-increment
+  creator_id int
+  link varchar
+  viewers_count int
+  name varchar
+  description text
+  created_at timestamp
+}
+
+Ref: Users.id > Streams.creator_id
+
